@@ -53,7 +53,10 @@ int main(int argc, char *argv[])
     listen(serverSocket, numberOfAcceptedConnections);
 
     // run till stop signal arrives
+    cout << "Waiting for input..." << endl;
     while(isRunning) {
+        cout << "..." << endl;
+
         // set address informations to client info struct
         sockaddr_in clientSocketAddressInformation;
         socklen_t clientSocketSize = sizeof(clientSocketAddressInformation);
