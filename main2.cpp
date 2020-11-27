@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
 {
     int serverSocket, clientSocket, port, allowedConnections;
     socklen_t clientAddressLength;
-    char buffer[256];
+    char buffer[2048];
     struct sockaddr_in serverAddress, clientAddress;
     int executionResult;
     if (argc < 2) {
