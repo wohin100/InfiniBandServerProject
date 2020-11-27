@@ -43,8 +43,9 @@ int main(int argc, char *argv[])
     sockaddr_in serverSocketAddressInformation;
     serverSocketAddressInformation.sin_family = AF_INET;
     serverSocketAddressInformation.sin_port = htons(port);
+    serverSocketAddressInformation.sin_addr.s_addr = INADDR_ANY;
     // make it binary
-    inet_pton(AF_INET, serverAddress, &serverSocketAddressInformation.sin_addr);
+    //inet_pton(AF_INET, serverAddress, &serverSocketAddressInformation.sin_addr);
     // bind it to socket
     bind(serverSocket, (sockaddr*)&serverSocketAddressInformation, sizeof(serverSocketAddressInformation));
 
