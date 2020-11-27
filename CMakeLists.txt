@@ -3,4 +3,4 @@ project(InfiniBandServerProject)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(InfiniBandServer main.cpp)
+add_executable(InfiniBandServer main2.cpp)
