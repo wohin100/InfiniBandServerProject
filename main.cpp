@@ -24,13 +24,17 @@ static void SignalHandler(int signal) {
 
 int main(int argc, char *argv[])
 {
-    // Provide complete URI
-    auto influxdb = influxdb::InfluxDBFactory::Get("http://localhost:8086/?db=infiniband");
+    for (int i = 0; i < 1000; ++i) {
+        // Provide complete URI
+        auto influxdb = influxdb::InfluxDBFactory::Get("http://localhost:8086/?db=infiniband");
 
         influxdb->write(influxdb::Point{"test"}
-                          .addField("value", 165)
-                          .addTag("host", "localhost")
+                                .addField("value", i)
+                                .addTag("host", "localhost")
         );
+        printf("Done\n");
+    }
+
 
     // check params
     if(argc < 3) {
