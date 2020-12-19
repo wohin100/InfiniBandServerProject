@@ -7,6 +7,8 @@
 #include <string.h>
 #include <string>
 #include <csignal>
+#include <InfluxDB.h>
+#include <InfluxDBFactory.h>
 
 using namespace std;
 int port = 80;
@@ -22,6 +24,14 @@ static void SignalHandler(int signal) {
 
 int main(int argc, char *argv[])
 {
+    // Provide complete URI
+    auto influxdb = influxdb::InfluxDBFactory::Get("http://localhost:8086/?db=infiniband");
+
+        influxdb->write(influxdb::Point{"test"}
+                          .addField("value", 165)
+                          .addTag("host", "localhost")
+        );
+
     // check params
     if(argc < 3) {
         printf("Usage: ./InfiniBandServer <serverAddress> <port>\n");
