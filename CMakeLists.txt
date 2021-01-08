@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 17)
 
 include(ExternalProject)
 
-add_executable(InfiniBandServer main.cpp)
+add_executable(InfiniBandServer main.cpp InfinibandInterface.cpp InfinibandInterface.h)
 
 include(ExternalProject)
 

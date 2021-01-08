@@ -1,14 +1,14 @@
 #include <iostream>
-#include <sys/types.h>
 #include <unistd.h>
 #include <sys/socket.h>
 #include <netdb.h>
 #include <arpa/inet.h>
-#include <string.h>
+#include <cstring>
 #include <string>
 #include <csignal>
 #include <InfluxDB.h>
 #include <InfluxDBFactory.h>
+#include "InfinibandInterface.h"
 
 using namespace std;
 int port = 80;
@@ -24,6 +24,9 @@ static void SignalHandler(int signal) {
 
 int main(int argc, char *argv[])
 {
+    InfinibandInterface* influxdbInterface = new InfinibandInterface("http://localhost", "8086", "infiniband");
+    influxdbInterface->storePointInDatabase("test", "value", 10000);
+    /*
     for (int i = 0; i < 1000; ++i) {
         // Provide complete URI
         auto influxdb = influxdb::InfluxDBFactory::Get("http://localhost:8086/?db=infiniband");
@@ -34,7 +37,7 @@ int main(int argc, char *argv[])
         );
         printf("Done\n");
     }
-
+    */
 
     // check params
     if(argc < 3) {
