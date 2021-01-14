@@ -9,9 +9,8 @@
 
 class Server {
 public:
-    Server();
 
-    Server(int port);
+    explicit Server(int port);
 
     void stop();
 };

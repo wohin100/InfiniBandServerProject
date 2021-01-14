@@ -9,34 +9,34 @@
 #include <csignal>
 #include <InfluxDB.h>
 #include <InfluxDBFactory.h>
-#include "InfinibandInterface.h"
+#include "InfluxDbInterface.h"
 
 using namespace std;
 
 bool isRunning = true;
 
 Server::Server(int port) {
-    // socket creation
-    int serverSocket = socket(AF_INET, SOCK_STREAM, 0);
-    if (serverSocket == -1)
-    {
-        cerr << "Socket can't be created" << endl;
-        throw "Socket can't be created";
-    }
+            // socket creation
+            int serverSocket = socket(AF_INET, SOCK_STREAM, 0);
+            if (serverSocket == -1)
+            {
+                cerr << "Socket can't be created" << endl;
+                throw "Socket can't be created";
+            }
 
-    // set address informations to server info struct
-    sockaddr_in serverSocketAddressInformation{};
-    serverSocketAddressInformation.sin_family = AF_INET;
-    serverSocketAddressInformation.sin_port = htons(port);
-    serverSocketAddressInformation.sin_addr.s_addr = INADDR_ANY;
-    // make it binary
-    //inet_pton(AF_INET, serverAddress, &serverSocketAddressInformation.sin_addr);
-    // bind it to socket
-    bind(serverSocket, (sockaddr*)&serverSocketAddressInformation, sizeof(serverSocketAddressInformation));
+            // set address informations to server info struct
+            sockaddr_in serverSocketAddressInformation{};
+            serverSocketAddressInformation.sin_family = AF_INET;
+            serverSocketAddressInformation.sin_port = htons(port);
+            serverSocketAddressInformation.sin_addr.s_addr = INADDR_ANY;
+            // make it binary
+            //inet_pton(AF_INET, serverAddress, &serverSocketAddressInformation.sin_addr);
+            // bind it to socket
+            bind(serverSocket, (sockaddr*)&serverSocketAddressInformation, sizeof(serverSocketAddressInformation));
 
-    // let the socket listen for connections
-    int numberOfAcceptedConnections = SOMAXCONN;
-    listen(serverSocket, numberOfAcceptedConnections);
+            // let the socket listen for connections
+            int numberOfAcceptedConnections = SOMAXCONN;
+            listen(serverSocket, numberOfAcceptedConnections);
 
     // run till stop signal arrives
     cout << "Waiting for input..." << endl;
@@ -66,7 +66,7 @@ Server::Server(int port) {
                 NI_MAXSERV,
                 0
         );
-        cout << clientName << " connected using port " << clientPort << endl;
+        cout << clientName << " connected using serverPort " << clientPort << endl;
 
         // buffer received data
         char buffer[4096];
