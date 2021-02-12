@@ -6,9 +6,6 @@
 #include <arpa/inet.h>
 #include <cstring>
 #include <string>
-#include <csignal>
-#include <InfluxDB.h>
-#include <InfluxDBFactory.h>
 #include "InfluxDbInterface.h"
 
 using namespace std;

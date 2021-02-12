@@ -13,9 +13,11 @@
 using namespace std;
 
 int serverPort;
-bool isRunning2;
+bool threadServerIsRunning;
 char readingBuffer[4096];
 InfluxDbInterface *influxDbService;
+
+//#define DEBUG "dummy"
 
 typedef struct {
     int socket;
@@ -27,7 +29,7 @@ typedef struct {
 
 MultiThreadServer::MultiThreadServer(int portToBind, string dbUrl, string dbPort, string database) {
     serverPort = portToBind;
-    isRunning2 = true;
+    threadServerIsRunning = true;
     influxDbService = new InfluxDbInterface(dbUrl, dbPort, database);
 }
 
@@ -57,8 +59,10 @@ void *processClientCall(void *connectionStruct) {
     }
 
     // TODO first simply print data => in future we will parse and write it to DB
+    #ifdef DEBUG
     cout << connection->clientName << " connected using serverPort " << connection->clientPort << endl;
     cout << string(readingBuffer, 0, bytesReceived) << endl;
+    #endif
 
     influxDbService->storeInfinibandInDatabase("test", readingBuffer, connection->clientName, connection->clientPort);
 
@@ -80,7 +84,7 @@ void MultiThreadServer::run() {
     int serverSocket = socket(AF_INET, SOCK_STREAM, 0);
     if (serverSocket == -1) {
         cerr << "Socket can't be created" << endl;
-        throw "Socket can't be created";
+        exit(EXIT_FAILURE);
     }
 
     // set address informations to server info struct
@@ -104,7 +108,7 @@ void MultiThreadServer::run() {
     memset(clientPort, 0, NI_MAXSERV);
 
     // wait for connections
-    while (isRunning2) {
+    while (threadServerIsRunning) {
         // set address informations to client info struct
         sockaddr_in clientSocketAddressInformation;
         socklen_t clientSocketSize = sizeof(clientSocketAddressInformation);
@@ -130,7 +134,7 @@ void MultiThreadServer::run() {
         if (connection->socket <= 0) {
             free(connection);
         }
-            // connection was successfully created
+        // connection was successfully created
         else {
             // start a new thread and listen instantly for new connections
             pthread_create(&thread, 0, processClientCall, (void *) connection);
@@ -140,7 +144,7 @@ void MultiThreadServer::run() {
 }
 
 void MultiThreadServer::stop() {
-    isRunning2 = false;
+    threadServerIsRunning = false;
     std::cout << "Server stopped" << std::endl;
 }
 

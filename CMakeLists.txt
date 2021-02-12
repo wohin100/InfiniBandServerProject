@@ -6,7 +6,7 @@ SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
 
 include(ExternalProject)
 
-add_executable(InfiniBandServer main.cpp InfluxDbInterface.cpp InfluxDbInterface.h Server.cpp Server.h MultiThreadServer.cpp MultiThreadServer.h)
+add_executable(InfiniBandServer main.cpp InfluxDbInterface.cpp InfluxDbInterface.h Server.cpp Server.h MultiThreadServer.cpp MultiThreadServer.h ConfigFileReader.cpp ConfigFileReader.h)
 
 include(ExternalProject)
 

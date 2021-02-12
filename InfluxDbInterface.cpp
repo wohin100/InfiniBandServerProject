@@ -2,38 +2,62 @@
 #include <InfluxDB.h>
 #include <InfluxDBFactory.h>
 #include <nlohmann/json.hpp>
+#include <iostream>
 
 using nlohmann::json;
 using namespace std;
+using namespace influxdb;
 
 string serverAddress;
+
+class InfluxDBException;
+
 InfluxDbInterface::InfluxDbInterface(string url, string port, string database) {
-    serverAddress = url+":"+port+"/?db="+database;
+    serverAddress = url + ":" + port + "/?db=" + database;
+    //TODO check if db exists
 }
 
-void InfluxDbInterface::storeInfinibandInDatabase(std::string measurement, std::string receivedJsonString, std::string clientName,
-                                                  std::string clientPort)
-{
-    auto receivedJson = json::parse(receivedJsonString);
+void InfluxDbInterface::storeInfinibandInDatabase(
+        string measurement,
+        string receivedJsonString,
+        string clientName,
+        string clientPort
+) {
+    json receivedJson;
+    try {
+        receivedJson = json::parse(receivedJsonString);
+    } catch (const nlohmann::detail::parse_error& e) {
+        cerr << e.what() << endl;
+        return;
+    }
 
-    auto influxdb = influxdb::InfluxDBFactory::Get(serverAddress);
-    influxdb->write(influxdb::Point{measurement}
-                            .addField("node", receivedJson["node"].get<string>())
-                            .addField("transmitted", receivedJson["transmitted"].get<int>())
-                            .addField("received", receivedJson["received"].get<int>())
-                            .addField("MulticastRcvPkts", receivedJson["MulticastRcvPkts"].get<int>())
-                            .addTag("node", receivedJson["node"].get<string>())
-                            .addTag("receivedViaPort", clientPort)
-                            .addTag("receivedViaAddress", clientName)
-    );
+    try {
+        auto influxdb = InfluxDBFactory::Get(serverAddress);
+        influxdb->write
+                (
+                        influxdb::Point{measurement}
+                                .addField("nodeDescription", receivedJson["nodeDescription"].get<string>())
+                                .addField("nodeNumPorts", receivedJson["nodeNumPorts"].get<int>())
+                                .addField("nodeGuid", receivedJson["nodeGuid"].get<string>())
+                                .addField("nodeUnicastRcvPkts", receivedJson["nodeUnicastRcvPkts"].get<int>())
+                                .addField("nodeUnicastXmitPkts", receivedJson["nodeUnicastXmitPkts"].get<int>())
+                                .addTag("nodeDescription", receivedJson["nodeDescription"].get<string>())
+                                .addTag("receivedViaPort", clientPort)
+                                .addTag("receivedViaAddress", clientName)
+                );
+    }
+    catch (runtime_error e) {
+        return;
+    }
 }
 
-void InfluxDbInterface::storePointInDatabase(string measurement, string field, int value)
-{
+void InfluxDbInterface::storePointInDatabase(string measurement, string field, int value) {
     auto influxdb = influxdb::InfluxDBFactory::Get(serverAddress);
 
-    influxdb->write(influxdb::Point{measurement}
+    influxdb->write
+            (
+                    influxdb::Point{measurement}
                             .addField(field, value)
                             .addTag("host", "localhost")
-    );
+            );
 }
