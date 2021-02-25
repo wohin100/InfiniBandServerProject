@@ -82,6 +82,7 @@ void InfluxDbInterface::storeInfinibandInDatabase(
     }
     catch (runtime_error e) {
         cerr << "Could not write values to DB" << endl;
+        cerr << e.what() << endl;
 
         return;
     }
