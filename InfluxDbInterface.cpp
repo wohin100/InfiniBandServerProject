@@ -75,7 +75,7 @@ void InfluxDbInterface::storeInfinibandInDatabase(
 
                                 .addField("nodeVL15Dropped", receivedJson["nodeLinkRecoveryCounter"].get<int>())
 
-                                .addTag("nodeDescription", receivedJson["nodeDescription"].get<string>())
+                                .addTag("nodeDescription", receivedJson["nodeName"].get<string>())
                                 .addTag("receivedViaPort", clientPort)
                                 .addTag("receivedViaAddress", clientName)
                 );
