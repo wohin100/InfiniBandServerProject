@@ -110,7 +110,6 @@ void MultiThreadServer::run() {
 
     // wait for connections
     while (threadServerIsRunning) {
-        cerr << "IN" << endl;
         // set address informations to client info struct
         sockaddr_in clientSocketAddressInformation;
         socklen_t clientSocketSize = sizeof(clientSocketAddressInformation);
