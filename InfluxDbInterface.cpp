@@ -45,7 +45,6 @@ void InfluxDbInterface::storeInfinibandInDatabase(
         influxdb->write
                 (
                         influxdb::Point{measurement}
-                                .addField("nodeDescription", receivedJson["nodeDescription"].get<string>())
                                 .addField("nodeNumPorts", receivedJson["nodeNumPorts"].get<int>())
                                 .addField("nodeGuid", receivedJson["nodeGuid"].get<int>())
 
