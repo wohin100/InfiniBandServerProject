@@ -18,7 +18,7 @@ char readingBuffer[4096];
 string databaseName;
 InfluxDbInterface *influxDbService;
 
-//#define DEBUG "dummy"
+#define DEBUG "dummy"
 
 typedef struct {
     int socket;
