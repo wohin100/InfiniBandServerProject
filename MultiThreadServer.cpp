@@ -15,6 +15,7 @@ using namespace std;
 int serverPort;
 bool threadServerIsRunning;
 char readingBuffer[4096];
+string databaseName;
 InfluxDbInterface *influxDbService;
 
 //#define DEBUG "dummy"
@@ -31,6 +32,7 @@ MultiThreadServer::MultiThreadServer(int portToBind, string dbUrl, string dbPort
     serverPort = portToBind;
     threadServerIsRunning = true;
     influxDbService = new InfluxDbInterface(dbUrl, dbPort, database);
+    databaseName = database;
 }
 
 void *processClientCall(void *connectionStruct) {
@@ -63,8 +65,7 @@ void *processClientCall(void *connectionStruct) {
     cout << connection->clientName << " connected using serverPort " << connection->clientPort << endl;
     cout << string(readingBuffer, 0, bytesReceived) << endl;
     #endif
-
-    influxDbService->storeInfinibandInDatabase("test", readingBuffer, connection->clientName, connection->clientPort);
+    influxDbService->storeInfinibandInDatabase(databaseName, readingBuffer, connection->clientName, connection->clientPort);
 
     // Send client success message
     string successMessage = "Data transmitted";

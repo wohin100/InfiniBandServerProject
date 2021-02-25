@@ -10,4 +10,6 @@ public:
     void
     storeInfinibandInDatabase(std::string measurement, std::string receivedJsonString, std::string clientName,
                               std::string clientPort);
+
+    void checkIfDatabaseExists(std::string database);
 };

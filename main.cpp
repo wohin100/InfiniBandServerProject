@@ -1,6 +1,6 @@
 #include <string>
 #include <csignal>
-#include <unistd.h>
+//#include <unistd.h>
 #include <archive.h>
 #include <syslog.h>
 #include <iostream>
@@ -28,7 +28,7 @@ handle_signal(int sig_nr, sighandler_t signalHandler) {
     }
     return oldSignal.sa_handler;
 }
-
+/*
 static void start_daemon(const char *log_name, int facility) {
 
     int fileDescriptor;
@@ -56,7 +56,7 @@ static void start_daemon(const char *log_name, int facility) {
     }
     openlog(log_name, LOG_PID | LOG_CONS | LOG_NDELAY, facility);
 }
-
+*/
 int main(int argc, char *argv[]) {
     // check params
     if (argc < 2) {
