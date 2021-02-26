@@ -10,12 +10,10 @@ using namespace influxdb;
 
 string serverAddress;
 
-std::unique_ptr<InfluxDB> influxdbClient;
 
 InfluxDbInterface::InfluxDbInterface(string url, string port, string database) {
     serverAddress = url + ":" + port + "/?db=" + database;
     //TODO check if db exists
-    influxdbClient = InfluxDBFactory::Get(serverAddress);
 }
 
 void InfluxDbInterface::checkIfDatabaseExists(string database) {
@@ -42,7 +40,7 @@ void InfluxDbInterface::storeInfinibandInDatabase(
     }
 
     try {
-
+        auto influxdbClient = InfluxDBFactory::Get(serverAddress);
         influxdbClient->write
                 (
                         influxdb::Point{measurement}
