@@ -10,11 +10,12 @@ using namespace influxdb;
 
 string serverAddress;
 
-class InfluxDBException;
+std::unique_ptr<InfluxDB> influxdbClient;
 
 InfluxDbInterface::InfluxDbInterface(string url, string port, string database) {
     serverAddress = url + ":" + port + "/?db=" + database;
     //TODO check if db exists
+    influxdbClient = InfluxDBFactory::Get(serverAddress);
 }
 
 void InfluxDbInterface::checkIfDatabaseExists(string database) {
@@ -41,8 +42,8 @@ void InfluxDbInterface::storeInfinibandInDatabase(
     }
 
     try {
-        auto influxdb = InfluxDBFactory::Get(serverAddress);
-        influxdb->write
+
+        influxdbClient->write
                 (
                         influxdb::Point{measurement}
                                 .addField("nodeNumPorts", receivedJson["nodeNumPorts"].get<int>())
@@ -82,7 +83,6 @@ void InfluxDbInterface::storeInfinibandInDatabase(
     catch (runtime_error e) {
         cerr << "Could not write values to DB" << endl;
         cerr << e.what() << endl;
-
         return;
     }
 }
