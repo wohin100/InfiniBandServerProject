@@ -45,7 +45,7 @@ void InfluxDbInterface::storeInfinibandInDatabase(
                 (
                         influxdb::Point{measurement}
                                 .addField("nodeNumPorts", receivedJson["nodeNumPorts"].get<int>())
-                                .addField("nodeGuid", receivedJson["nodeGuid"].get<int>())
+                                .addField("nodeGuid", receivedJson["nodeGuid"].get<string>())
 
                                 .addField("nodeUnicastRcvPkts", receivedJson["nodeUnicastRcvPkts"].get<int>())
                                 .addField("nodeUnicastXmitPkts", receivedJson["nodeUnicastXmitPkts"].get<int>())
@@ -71,7 +71,7 @@ void InfluxDbInterface::storeInfinibandInDatabase(
                                 .addField("nodeLocalLinkIntegrityErrors", receivedJson["nodeLocalLinkIntegrityErrors"].get<int>())
                                 .addField("nodeLinkRecoveryCounter", receivedJson["nodeLinkRecoveryCounter"].get<int>())
 
-                                .addField("nodeVL15Dropped", receivedJson["nodeLinkRecoveryCounter"].get<int>())
+                                .addField("nodeVL15Dropped", receivedJson["nodeVL15Dropped"].get<int>())
 
                                 .addTag("nodeDescription", receivedJson["nodeName"].get<string>())
                                 .addTag("receivedViaPort", clientPort)
