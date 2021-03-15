@@ -60,11 +60,6 @@ void *processClientCall(void *connectionStruct) {
         cout << "Data transfer completed" << endl;
     }
 
-    // TODO first simply print data => in future we will parse and write it to DB
-    #ifdef DEBUG
-    cout << connection->clientName << " connected using serverPort " << connection->clientPort << endl;
-    cout << string(readingBuffer, 0, bytesReceived) << endl;
-    #endif
     influxDbService->storeInfinibandInDatabase(databaseName, readingBuffer, connection->clientName, connection->clientPort);
 
     // Send client success message

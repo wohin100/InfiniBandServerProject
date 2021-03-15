@@ -13,7 +13,6 @@ string serverAddress;
 
 InfluxDbInterface::InfluxDbInterface(string url, string port, string database) {
     serverAddress = url + ":" + port + "/?db=" + database;
-    //TODO check if db exists
 }
 
 void InfluxDbInterface::checkIfDatabaseExists(string database) {
